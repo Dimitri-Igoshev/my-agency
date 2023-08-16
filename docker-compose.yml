@@ -1,14 +1,32 @@
-version: '3.5'
+version: "3.8"
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: docker-next
+  nextjs:
+    image: kennethnwc/nextapp:${NEXT_APP_VERSION}
     ports:
-      - '80:3000'
-      - '443:3000'
+      - "3000:3000"
+    build:
+      context: nextapp
+      dockerfile: Dockerfile
+      target: prod
+      args:
+        NEXT_PUBLIC_GOOGLE_KEY: ${GOOGLE_KEY}
+        NEXT_PUBLIC_APP_VERSION: ${NEXT_APP_VERSION}
     volumes:
-      - .:/app
       - /app/node_modules
+      - /app/.next
+    restart: always
+    environment:
+      - API_URL=${API_URL}
+      - GOOGLE_KEY=${GOOGLE_KEY}
+
+  frontend:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - nextjs
+    restart: always
