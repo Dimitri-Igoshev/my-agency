@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  my-agency:
-    image: igoshev/my-agency:latest
+  nextjs:
+    image: kennethnwc/nextapp:latest
     ports:
       - "3000:3000"
     build:
@@ -28,5 +28,5 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - my-agency
+      - nextjs
     restart: always
