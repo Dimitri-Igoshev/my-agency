@@ -1,12 +1,12 @@
 version: "3.8"
 
 services:
-  nextjs:
-    image: kennethnwc/nextapp:latest
+  my-agency:
+    image: igoshev/my-agency:latest
     ports:
       - "3000:3000"
     build:
-      context: nextapp
+      context: my-agency
       dockerfile: Dockerfile
       target: prod
 #      args:
